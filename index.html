@@ -10,7 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #ffffff;
+            --bg-color: #f0f2f5;
+            --slide-bg: #ffffff;
             --text-main: #37352f;
             --text-muted: #787774;
             --border-color: #e9e9e7;
@@ -20,7 +21,6 @@
             --callout-bg: #f4f5f8;
             --callout-border: #d3d5d9;
             --primary-color: #2383e2;
-            --page-width: 800px;
         }
 
         body {
@@ -35,25 +35,51 @@
         }
 
         .container {
-            max-width: var(--page-width);
-            margin: 0 auto;
-            padding: 60px 40px;
+            padding: 40px 20px;
+        }
+
+        /* スライドのベーススタイル */
+        .slide {
+            width: 100%;
+            max-width: 1080px; /* A4横に近いサイズ感 */
+            aspect-ratio: 297 / 210; /* A4比率（白銀比） */
+            margin: 0 auto 40px auto;
+            background-color: var(--slide-bg);
+            padding: 50px 70px;
+            box-sizing: border-box; /* はみ出し防止 */
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 縦方向中央揃えにすることでスライドらしさを強調 */
+            position: relative;
+            overflow: hidden; /* コンテンツのはみ出しを防ぐ */
+        }
+
+        .slide.center-content {
+            align-items: center;
+        }
+
+        .slide:last-child {
+            margin-bottom: 0;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.6rem;
             font-weight: 700;
             margin-bottom: 0.5em;
             letter-spacing: -0.02em;
+            line-height: 1.3;
         }
 
         h2 {
             font-size: 1.8rem;
             font-weight: 600;
-            margin-top: 2em;
-            margin-bottom: 0.8em;
+            margin-top: 0;
+            margin-bottom: 1em;
             padding-bottom: 0.3em;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
         }
 
         h3 {
@@ -66,21 +92,6 @@
         p {
             margin-bottom: 1em;
             color: var(--text-main);
-        }
-
-        .cover-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
-            border-radius: 12px;
-            margin-bottom: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .callout {
@@ -174,17 +185,14 @@
             margin-bottom: 12px;
             color: var(--primary-color);
         }
-
-        .img-placeholder {
-            width: 100%;
-            background-color: #f0f0f0;
-            border: 1px dashed #ccc;
-            text-align: center;
-            padding: 40px 0;
-            color: #888;
-            border-radius: 8px;
-            margin: 16px 0;
+        
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
             font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--text-muted);
         }
 
         hr {
@@ -193,22 +201,29 @@
             margin: 40px 0;
         }
 
-        /* 印刷用スタイル */
+        /* 印刷用スタイル（1ページ1スライド固定・A4横対応） */
         @media print {
+            @page {
+                size: A4 landscape; /* A4横での印刷を指定 */
+                margin: 0mm;
+            }
             body {
                 background: white;
+                margin: 0;
+                padding: 0;
             }
             .container {
                 padding: 0;
-                max-width: 100%;
             }
-            .cover-image {
-                display: none;
-            }
-            h2 {
-                page-break-after: avoid;
-            }
-            .step-box, .callout {
+            .slide {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+                width: 297mm;
+                height: 209mm; /* はみ出しによる白紙ページ生成を避けるため1mm削る */
+                max-width: none;
+                aspect-ratio: auto;
+                page-break-after: always;
                 page-break-inside: avoid;
             }
             .copy-button {
@@ -220,19 +235,25 @@
 <body>
 
 <div class="container">
-    <div class="cover-image">
-        Gemini × GAS 実践ワークショップ
+
+    <!-- スライド 1: 表紙 -->
+    <div class="slide center-content">
+        <div style="text-align: center;">
+            <p style="color: var(--primary-color); font-weight: bold; font-size: 1.2rem; margin-bottom: 20px;">Gemini × GAS 実践ワークショップ</p>
+            <h1>プログラミング未経験から<br>「カレンダー自動連携」を作る</h1>
+            <p style="color: var(--text-muted); margin-top: 40px; font-size: 1.1rem;">
+                対象：社内メンバー向け / 所要時間：30分<br>
+                準備物：Googleアカウント、Chromeブラウザ（※事前データ準備不要！）
+            </p>
+        </div>
+        <div class="slide-number">1</div>
     </div>
 
-    <h1>プログラミング未経験から「カレンダー自動連携」を作る</h1>
-    <p style="color: var(--text-muted); margin-bottom: 40px;">対象：社内メンバー向け / 所要時間：30分 / 準備物：Googleアカウント、Chromeブラウザ（※事前データ準備不要！）</p>
-
-    <!-- 目次 -->
-    <div class="callout" style="background-color: var(--accent-bg); border-left-color: var(--text-muted);">
-        <div class="callout-icon">📋</div>
-        <div class="callout-content">
-            <p><strong>目次</strong></p>
-            <ol style="margin-top: 8px; margin-bottom: 0;">
+    <!-- スライド 2: 目次 -->
+    <div class="slide">
+        <h2>目次</h2>
+        <div class="callout" style="background-color: var(--accent-bg); border-left-color: var(--text-muted); padding: 30px; font-size: 1.2rem;">
+            <ol style="line-height: 2.2;">
                 <li>導入：AIとGASで業務はどう変わる？</li>
                 <li>座学：Geminiへの指示（プロンプト）のコツ</li>
                 <li>ワーク1：Geminiに「カレンダー連携コード」を書かせる</li>
@@ -240,123 +261,161 @@
                 <li>まとめ・注意点</li>
             </ol>
         </div>
+        <div class="slide-number">2</div>
     </div>
 
+    <!-- スライド 3: 導入 (Geminiとは・GASとは) -->
+    <div class="slide">
+        <h2>1. 導入：AIとGASで業務はどう変わる？</h2>
+        <div style="display: flex; gap: 40px; margin-top: 20px;">
+            <div style="flex: 1;">
+                <h3 style="color: var(--primary-color);">「Gemini」とは？</h3>
+                <p style="line-height: 1.8;">Googleが開発した最新の生成AI（人工知能）です。自然な文章を理解し、要約、翻訳、そして<strong>プログラミングコードの生成</strong>を行います。「こんな風に動くプログラムを作って」とお願いするだけで、正確なコードを書き上げてくれる「専属エンジニア」のような存在です。</p>
+            </div>
+            <div style="flex: 1;">
+                <h3 style="color: #0f9d58;">「GAS」とは？</h3>
+                <p style="line-height: 1.8;">Google Apps Scriptの略で、Googleが提供している<strong>プログラミングを実行するための無料の仕組み</strong>です。最大の強みは、Gmail、スプレッドシート、Googleカレンダーなどの<strong>Googleサービス同士を簡単に連携して、手作業を自動化</strong>できる点です。</p>
+            </div>
+        </div>
+        <div class="slide-number">3</div>
+    </div>
 
-    <h2 id="section1">1. 導入：AIとGASで業務はどう変わる？</h2>
-    
-    <h3>そもそも「Gemini」とは？</h3>
-    <p>Gemini（ジェミニ）は、Googleが開発した最新の生成AI（人工知能）です。人間のように自然な文章を理解し、文章の作成、要約、翻訳、そして<strong>プログラミングコードの生成</strong>まで幅広くこなします。「こんな風に動くプログラムを作って」と日本語でお願いするだけで、一瞬で正確なコードを書き上げてくれる、頼もしい「専属のエンジニア」のような存在です。</p>
-
-    <h3>そもそも「GAS」とは？</h3>
-    <p>Google Apps Script（略してGAS/ガス）は、Googleが提供している<strong>プログラミングを実行するための無料の仕組み</strong>です。特別なソフトをインストールしなくても、ウェブブラウザさえあれば動きます。<br>最大の強みは、Gmail、スプレッドシート、Googleカレンダーなどの<strong>Googleサービス同士を簡単に連携して、手作業を自動化できる</strong>点です。</p>
-
-    <div class="callout" style="border-left-color: var(--primary-color);">
-        <div class="callout-icon">💡</div>
-        <div class="callout-content">
-            <p><strong>なぜ今、この組み合わせなのか？</strong></p>
-            <p>日々の業務で「これ、いちいちコピペするの面倒だな…」と思ったことはありませんか？</p>
-            <ul style="margin-top: 8px;">
-                <li>カレンダーの予定を見て、朝礼用のシートに書き写す</li>
+    <!-- スライド 4: 導入 (なぜ今なのか) -->
+    <div class="slide">
+        <h2>1. 導入：なぜ今、この組み合わせなのか？</h2>
+        <div class="callout" style="border-left-color: var(--primary-color); padding: 30px;">
+            <p style="font-size: 1.2rem; font-weight: bold; margin-bottom: 20px;">日々の業務で「これ、いちいちコピペするの面倒だな…」と思ったことはありませんか？</p>
+            <ul style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">
+                <li>カレンダーの予定を見て、朝礼用のシートに手入力で書き写す</li>
                 <li>スプレッドシートのリストから、顧客あてのメール下書きを一括作成する</li>
             </ul>
-            <p>これらを自動化（GASを活用）するには、今まで「プログラミングをイチから学習する」という高い壁がありました。しかし今は、<strong>「Geminiに日本語でお願いする」だけで、誰でもGASのツールを作れる</strong>ようになりました。今日はこの組み合わせで「カレンダー連携」を自動化してみましょう。</p>
+            <p style="line-height: 1.8;">今までは、自動化するには「プログラミングをイチから学習する」高い壁がありました。しかし今は、<strong>「Geminiに日本語でお願いする」だけで、誰でもGASのツールを作れる</strong>ようになりました。今日はこの組み合わせで自動化を体験しましょう。</p>
         </div>
+        <div class="slide-number">4</div>
     </div>
 
+    <!-- スライド 5: 座学 -->
+    <div class="slide">
+        <h2>2. 座学：Geminiへの指示（プロンプト）のコツ</h2>
+        <p style="font-size: 1.1rem;">AIは「曖昧な指示」が苦手です。<br>プログラミングのコードを生成してもらう際には、以下の<strong>3つの要素</strong>を含めると成功確率が格段に上がります。</p>
 
-    <h2 id="section2">2. 座学：Geminiへの指示（プロンプト）のコツ</h2>
-    <p>AIは「曖昧な指示」が苦手です。プログラミングのコードを生成してもらう際には、以下の<strong>3つの要素</strong>を含めると成功確率が格段に上がります。</p>
-
-    <div class="step-box">
-        <ul style="margin:0;">
-            <li><strong>👤 役割</strong>：「あなたはプロのGoogle Apps Scriptのエンジニアです」</li>
-            <li><strong>🎯 目的</strong>：「自分のGoogleカレンダーの今日の予定を取得して」</li>
-            <li><strong>📝 条件</strong>：「コードには日本語で丁寧なコメント（説明）を入れて」</li>
-        </ul>
+        <div class="step-box" style="margin-top: 30px;">
+            <ul style="font-size: 1.25rem; line-height: 2.5; margin:0;">
+                <li><strong>👤 役割</strong>：「あなたはプロのGoogle Apps Scriptのエンジニアです」</li>
+                <li><strong>🎯 目的</strong>：「自分のGoogleカレンダーの今日の予定を取得して」</li>
+                <li><strong>📝 条件</strong>：「コードには日本語で丁寧なコメント（説明）を入れて」</li>
+            </ul>
+        </div>
+        <div class="slide-number">5</div>
     </div>
 
+    <!-- スライド 6: ワーク1 前半（プロンプト送信） -->
+    <div class="slide">
+        <h2>3. ワーク1：Geminiにコードを書かせる（1/2）</h2>
+        <p style="font-size: 1.1rem;">ミッション：<strong>「空っぽのスプレッドシートに、自分の本日の予定（Googleカレンダー）を自動で一覧化する」</strong></p>
 
-    <h2 id="section3">3. ワーク1：Geminiに「カレンダー連携コード」を書かせる</h2>
-    <p>本日のミッションは：<strong>「空っぽのスプレッドシートに、自分の本日の予定（Googleカレンダー）を自動で一覧化する」</strong>プログラムを作ることです。GASの強みである「Googleの他サービスとの連携」を体験します。</p>
-
-    <div class="step-box">
-        <div class="step-title">Step 1. 以下の文をコピーしてGeminiに送ってください</div>
-        <pre><button class="copy-button" onclick="copyCode(this)">コピー</button><code>あなたはプロのGoogle Apps Script（GAS）エンジニアです。
+        <div class="step-box" style="margin-top: 10px;">
+            <div class="step-title">以下の文をコピーして、Geminiに送ってください</div>
+            <pre style="margin-bottom: 0; padding: 12px;"><button class="copy-button" onclick="copyCode(this)">コピー</button><code style="font-size: 0.85rem;">あなたはプロのGoogle Apps Script（GAS）エンジニアです。
 以下の要件を満たすGASのコードを作成してください。
 
 【要件】
 ・自分のGoogleカレンダーから、本日の予定（イベント）をすべて取得してください。
 ・現在開いているスプレッドシートのアクティブなシートに書き出してください。
 ・1行目に「見出し（開始時刻、終了時刻、予定のタイトル）」を太字で入力してください。
-・2行目から、取得した予定を時系列順に一覧で書き出してください。時刻は「HH:mm」の形式で見やすくしてください。
+・2行目から、時系列順に予定を書き出してください。時刻は「HH:mm」形式にしてください。
 ・関数の名前は「getTodaysEvents」にしてください。
 ・初学者でも何をしているか分かるように、コードの各行に丁寧な日本語のコメントをつけてください。</code></pre>
-    </div>
-
-    <div class="callout">
-        <div class="callout-icon">💡</div>
-        <div class="callout-content">
-            <p><strong>Geminiの回答が出たら</strong></p>
-            <p>Geminiがプログラムの文字列（コード）を出力します。そのコードブロックにある「コピー」ボタンを押して、クリップボードに保存しておいてください。</p>
         </div>
+        <div class="slide-number">6</div>
     </div>
 
-
-    <h2 id="section4">4. ワーク2：実際に動かしてみる</h2>
-    <p>いよいよ、作成したプログラムをスプレッドシートに組み込んで動かします。</p>
-
-    <div class="step-box">
-        <div class="step-title">Step 1. 新しいスプレッドシートとエディタの準備</div>
-        <ol>
-            <li>ブラウザで「Google ドライブ（またはスプレッドシート）」を開き、**「新規」スプレッドシート**を作成します。何もない真っ白なシートで構いません。</li>
-            <li>上部のメニューバーの <strong>[拡張機能]</strong> ＞ <strong>[Apps Script]</strong> をクリックします。</li>
-            <li>「無題のプロジェクト」というエディタ画面が開いたら、最初から書かれている <code>function myFunction() { }</code> を<strong>全て削除</strong>します。</li>
-            <li>先ほどGeminiからコピーしたコードを<strong>貼り付け</strong>ます。</li>
-            <li>画面上部の「💾 保存アイコン」をクリックして保存します。</li>
-        </ol>
-    </div>
-
-    <div class="step-box">
-        <div class="step-title">Step 2. 実行と承認（最初だけ必要な壁！）</div>
-        <p>初めて実行するときだけ、Googleから「スプレッドシートやカレンダーを操作してもいいですか？」という警告が出ます。以下の手順で許可してください。</p>
-        <ol>
-            <li>画面上部の <strong>[▷ 実行]</strong> ボタンをクリックします。</li>
-            <li>「承認が必要です」という画面が出たら <strong>[権限を確認]</strong> をクリック。</li>
-            <li>自分のGoogleアカウントを選択します。</li>
-            <li>「このアプリはGoogleで確認されていません」と出たら、左下の <strong>[詳細]</strong> を開き、<strong>[無題のプロジェクト（安全ではないページ）に移動]</strong> をクリックします。</li>
-            <li>最後に <strong>[許可]</strong> をクリックします。</li>
-        </ol>
-    </div>
-
-    <div class="callout" style="border-left-color: #27ae60; background-color: #eafaf1;">
-        <div class="callout-icon">🎉</div>
-        <div class="callout-content">
-            <p><strong>成功しましたか？</strong></p>
-            <p>スプレッドシートの画面に戻ってみましょう。何もない真っ白だったシートに、あなたの**「今日のカレンダーの予定」**がズラッと一覧で入力されていれば大成功です！</p>
-            <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 8px;">※もし今日の予定がない場合は、見出しだけが作られます。テスト的に今日のカレンダーに予定を入れてから再度実行してみてください。</p>
+    <!-- スライド 7: ワーク1 後半（結果のコピー） -->
+    <div class="slide">
+        <h2>3. ワーク1：Geminiにコードを書かせる（2/2）</h2>
+        
+        <div class="callout" style="padding: 40px; margin-top: 20px;">
+            <div class="callout-icon" style="font-size: 2rem;">💡</div>
+            <div class="callout-content" style="margin-left: 10px;">
+                <p style="font-size: 1.4rem; font-weight: bold; margin-bottom: 15px;">Geminiの回答が出たら</p>
+                <p style="font-size: 1.2rem; line-height: 1.8;">Geminiがプログラムの文字列（コードブロック）を出力します。<br>そのコードブロックの右上にある<strong>「コードをコピーする」ボタン</strong>（またはコピーのアイコン）を押して、クリップボードに保存しておいてください。</p>
+            </div>
         </div>
+        <div class="slide-number">7</div>
     </div>
 
+    <!-- スライド 8: ワーク2 前半（準備） -->
+    <div class="slide">
+        <h2>4. ワーク2：実際に動かしてみる（ファイル準備）</h2>
+        <p style="font-size: 1.1rem;">いよいよ、AIが作成したプログラムをご自身のスプレッドシートに組み込みます。</p>
 
-    <h2 id="section5">5. まとめ・注意点</h2>
-    <p>たったこれだけの手順で、皆さんは「AIにコードを書かせて、複数サービスを連携し、自動でリストを作るツール」を作ることができました。「明日の予定を毎晩LINE（またはChatwork）に送る」なども同様の手順で簡単に作れます。</p>
-    
-    <div class="callout" style="border-left-color: #eb5757; background-color: #fdeded;">
-        <div class="callout-icon">⚠️</div>
-        <div class="callout-content">
-            <p><strong>業務で使う際の絶対に守るべき注意点</strong></p>
-            <ol style="margin-bottom: 0;">
-                <li><strong>機密情報をGeminiに入力しない</strong>：実際の顧客名や売上数字などは絶対にプロンプトに入れないでください。今回のように「本日の予定を取得」とルールや処理の内容だけをAIに作らせて、データ自体はGoogleの強固なセキュリティ環境内（GAS上）で処理させましょう。</li>
-                <li><strong>自己責任での実行</strong>：AIのコードは完璧ではありません（ハルシネーション）。必ずテスト・動作確認をしてから、本番業務で使用してください。</li>
+        <div class="step-box" style="margin-top: 10px;">
+            <div class="step-title" style="font-size: 1.2rem;">Step 1. 新しいスプレッドシートとエディタの準備</div>
+            <ol style="font-size: 1.1rem; line-height: 1.8;">
+                <li>ブラウザで「Google ドライブ（またはスプレッドシート）」を開き、**「新規」スプレッドシート**を作成します。（真っ白なシートで構いません）</li>
+                <li>上部のメニューバーの <strong>[拡張機能]</strong> ＞ <strong>[Apps Script]</strong> をクリックします。</li>
+                <li>「無題のプロジェクト」というエディタ画面が開いたら、最初から書かれている <code>function myFunction() { }</code> の文字を<strong>全て削除</strong>します。</li>
+                <li>先ほどGeminiからコピーしたコードを<strong>貼り付け</strong>ます。</li>
+                <li>画面上部の「💾 保存アイコン」をクリックして保存します。</li>
             </ol>
         </div>
+        <div class="slide-number">8</div>
     </div>
 
-    <hr>
-    <p style="text-align: center; color: var(--text-muted); font-size: 0.9em;">
-        お疲れ様でした！質問があればお気軽にどうぞ。
-    </p>
+    <!-- スライド 9: ワーク2 後半（実行と承認） -->
+    <div class="slide">
+        <h2>4. ワーク2：実行とセキュリティ承認</h2>
+        <p style="font-size: 1.1rem;">初めて実行するときだけ、Googleから「スプレッドシートやカレンダーを操作してもいいですか？」という警告が出ます。以下の手順で許可してください。</p>
+
+        <div class="step-box" style="margin-top: 10px;">
+            <div class="step-title" style="font-size: 1.2rem;">Step 2. セキュリティの承認手順（最初だけ）</div>
+            <ol style="font-size: 1.1rem; line-height: 1.8;">
+                <li>画面上部の <strong>[▷ 実行]</strong> ボタンをクリックします。</li>
+                <li>「承認が必要です」という画面が出たら <strong>[権限を確認]</strong> をクリック。</li>
+                <li>自分のGoogleアカウントを選択します。</li>
+                <li>「このアプリはGoogleで確認されていません」と出たら、左下の <strong>[詳細]</strong> を開き、<strong>[無題のプロジェクト（安全ではないページ）に移動]</strong> をクリックします。</li>
+                <li>最後に <strong>[許可]</strong> をクリックします。</li>
+            </ol>
+        </div>
+        <div class="slide-number">9</div>
+    </div>
+
+    <!-- スライド 10: 成功確認 -->
+    <div class="slide">
+        <h2>4. ワーク2：成功確認 🎉</h2>
+        
+        <div class="callout" style="border-left-color: #27ae60; background-color: #eafaf1; padding: 40px; margin-top: 30px;">
+            <div class="callout-icon" style="font-size: 2.5rem;">🎉</div>
+            <div class="callout-content" style="margin-left: 20px;">
+                <p style="font-size: 1.5rem; font-weight: bold; margin-bottom: 20px;">成功しましたか？</p>
+                <p style="font-size: 1.2rem; line-height: 1.8;">スプレッドシートの画面に戻ってみましょう。<br>何もない真っ白だったシートに、あなたの<strong>「今日のカレンダーの予定」</strong>がズラッと一覧で入力されていれば大成功です！</p>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 20px;">※もし今日の予定がない場合は、見出しだけが作られます。<br>テスト的に今日のカレンダーに予定を入れてから再度実行してみてください。</p>
+            </div>
+        </div>
+        <div class="slide-number">10</div>
+    </div>
+
+    <!-- スライド 11: まとめ -->
+    <div class="slide">
+        <h2>5. まとめ・注意点</h2>
+        <p style="font-size: 1.1rem;">たったこれだけの手順でプログラムを作成できました。「明日の予定を毎晩Chatworkに送る」なども同様の手順で簡単に作れます。</p>
+        
+        <div class="callout" style="border-left-color: #eb5757; background-color: #fdeded; margin-top: 20px;">
+            <div class="callout-icon" style="font-size: 1.5rem;">⚠️</div>
+            <div class="callout-content">
+                <p style="font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;">業務で使う際の絶対に守るべき注意点</p>
+                <ol style="margin-bottom: 0; line-height: 1.8; font-size: 1.1rem;">
+                    <li><strong>機密情報をGeminiに入力しない</strong>：<br>実際の顧客名や売上数字などは絶対にプロンプトに入れないでください。処理のルールだけをAIに作らせて、データ自体はGAS内で守りましょう。</li>
+                    <li><strong>自己責任での実行</strong>：<br>AIのコードは完璧ではありません。必ずテスト・動作確認をしてから業務使用してください。</li>
+                </ol>
+            </div>
+        </div>
+
+        <p style="text-align: center; color: var(--text-muted); font-size: 1.2rem; margin-top: 40px; font-weight: bold;">
+            お疲れ様でした！質問があればお気軽にどうぞ。
+        </p>
+        <div class="slide-number">11</div>
+    </div>
 
 </div>
 
